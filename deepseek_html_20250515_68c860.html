@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Check-In System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .menu {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        form {
+            margin: 15px 0;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hotel Check-In System</h1>
+        
+        <div class="menu">
+            <button onclick="showSection('checkin')">Check In Guest</button>
+            <button onclick="showSection('view')">View All Guests</button>
+            <button onclick="showSection('search')">Search Guest</button>
+        </div>
+        
+        <!-- Check In Form -->
+        <div id="checkin-section">
+            <h2>New Guest Check-In</h2>
+            <form id="checkin-form">
+                <label for="name">Guest Name:</label>
+                <input type="text" id="name" required>
+                
+                <label for="room">Room Number:</label>
+                <input type="text" id="room" required>
+                
+                <label for="checkin">Check-in Date:</label>
+                <input type="date" id="checkin" required>
+                
+                <label for="nights">Number of Nights:</label>
+                <input type="number" id="nights" min="1" required>
+                
+                <button type="submit">Check In</button>
+            </form>
+            <div id="checkin-message"></div>
+        </div>
+        
+        <!-- View All Guests -->
+        <div id="view-section" class="hidden">
+            <h2>Current Guests</h2>
+            <table id="guests-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Room</th>
+                        <th>Check-In</th>
+                        <th>Nights</th>
+                    </tr>
+                </thead>
+                <tbody id="guests-list">
+                    <!-- Guests will be added here -->
+                </tbody>
+            </table>
+            <p id="no-guests">No guests currently checked in.</p>
+        </div>
+        
+        <!-- Search Guest -->
+        <div id="search-section" class="hidden">
+            <h2>Search Guest</h2>
+            <form id="search-form">
+                <label for="search-name">Guest Name:</label>
+                <input type="text" id="search-name" required>
+                <button type="submit">Search</button>
+            </form>
+            <div id="search-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store guests in memory
+        let guests = JSON.parse(localStorage.getItem('hotelGuests')) || [];
+        
+        // Show/hide sections
+        function showSection(sectionId) {
+            document.getElementById('checkin-section').classList.add('hidden');
+            document.getElementById('view-section').classList.add('hidden');
+            document.getElementById('search-section').classList.add('hidden');
+            
+            document.getElementById(sectionId + '-section').classList.remove('hidden');
+            
+            if (sectionId === 'view') {
+                displayAllGuests();
+            }
+        }
+        
+        // Check in a new guest
+        document.getElementById('checkin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const guest = {
+                name: document.getElementById('name').value,
+                room: document.getElementById('room').value,
+                checkin: document.getElementById('checkin').value,
+                nights: document.getElementById('nights').value
+            };
+            
+            guests.push(guest);
+            localStorage.setItem('hotelGuests', JSON.stringify(guests));
+            
+            document.getElementById('checkin-message').innerHTML = `
+                <p style="color: green;">Guest ${guest.name} checked into room ${guest.room} successfully.</p>
+            `;
+            
+            // Clear form
+            this.reset();
+        });
+        
+        // Display all guests
+        function displayAllGuests() {
+            const tbody = document.getElementById('guests-list');
+            tbody.innerHTML = '';
+            
+            if (guests.length === 0) {
+                document.getElementById('no-guests').style.display = 'block';
+                return;
+            }
+            
+            document.getElementById('no-guests').style.display = 'none';
+            
+            guests.forEach(guest => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${guest.name}</td>
+                    <td>${guest.room}</td>
+                    <td>${guest.checkin}</td>
+                    <td>${guest.nights}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Search for a guest
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const searchName = document.getElementById('search-name').value.toLowerCase();
+            const results = guests.filter(guest => 
+                guest.name.toLowerCase().includes(searchName)
+            );
+            
+            const resultsDiv = document.getElementById('search-results');
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>No guests found with that name.</p>';
+                return;
+            }
+            
+            let html = '<h3>Search Results:</h3><ul>';
+            results.forEach(guest => {
+                html += `
+                    <li>
+                        <strong>${guest.name}</strong> - Room ${guest.room}<br>
+                        Check-in: ${guest.checkin} for ${guest.nights} nights
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            
+            resultsDiv.innerHTML = html;
+        });
+        
+        // Initialize by showing check-in section
+        showSection('checkin');
+    </script>
+</body>
+</html>
