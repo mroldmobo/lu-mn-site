@@ -3,224 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Check-In System</title>
+    <title>Lümn | Coming Soon</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+        :root {
+            --primary: #111111;
+            --secondary: #333333;
+            --accent: #4a6fa5;
+            --bg: #f8f8f8;
+            --text: #222222;
+            --text-light: #777777;
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .menu {
-            margin-bottom: 20px;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        form {
-            margin: 15px 0;
-        }
-        input, select {
-            padding: 8px;
-            margin: 5px 0;
-            width: 100%;
+
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        table {
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+            height: 100%;
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.6;
+            z-index: -1;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+
+        .container {
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeIn 1.5s ease-out;
         }
-        th {
-            background-color: #f2f2f2;
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 600;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
         }
-        .hidden {
-            display: none;
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            animation: stretch 1.5s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .countdown-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            min-width: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .newsletter {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        .newsletter-button {
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes stretch {
+            0% { width: 0; opacity: 0; }
+            100% { width: 80px; opacity: 1; }
+        }
+
+        /* Floating fabric animation */
+        .fabric {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(74, 111, 165, 0.1);
+            border-radius: 50% 50% 0 50%;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .fabric:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+        }
+
+        .fabric:nth-child(2) {
+            bottom: 15%;
+            right: 10%;
+            width: 180px;
+            height: 180px;
+            animation-delay: 2s;
+        }
+
+        .fabric:nth-child(3) {
+            top: 60%;
+            left: 25%;
+            width: 100px;
+            height: 100px;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .countdown {
+                gap: 1rem;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Floating fabric elements -->
+    <div class="fabric"></div>
+    <div class="fabric"></div>
+    <div class="fabric"></div>
+    
+    <!-- Subtle background pattern -->
+    <div class="bg-pattern"></div>
+    
     <div class="container">
-        <h1>Hotel Check-In System</h1>
+        <div class="logo">LÜMN</div>
+        <h1>Modern Minimalist Apparel<br>Coming Soon</h1>
+        <p>We're crafting elevated essentials for your wardrobe. Sign up to be the first to know when we launch.</p>
         
-        <div class="menu">
-            <button onclick="showSection('checkin')">Check In Guest</button>
-            <button onclick="showSection('view')">View All Guests</button>
-            <button onclick="showSection('search')">Search Guest</button>
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
         </div>
         
-        <!-- Check In Form -->
-        <div id="checkin-section">
-            <h2>New Guest Check-In</h2>
-            <form id="checkin-form">
-                <label for="name">Guest Name:</label>
-                <input type="text" id="name" required>
-                
-                <label for="room">Room Number:</label>
-                <input type="text" id="room" required>
-                
-                <label for="checkin">Check-in Date:</label>
-                <input type="date" id="checkin" required>
-                
-                <label for="nights">Number of Nights:</label>
-                <input type="number" id="nights" min="1" required>
-                
-                <button type="submit">Check In</button>
+        <div class="newsletter">
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                <button type="submit" class="newsletter-button">Notify Me</button>
             </form>
-            <div id="checkin-message"></div>
         </div>
         
-        <!-- View All Guests -->
-        <div id="view-section" class="hidden">
-            <h2>Current Guests</h2>
-            <table id="guests-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Room</th>
-                        <th>Check-In</th>
-                        <th>Nights</th>
-                    </tr>
-                </thead>
-                <tbody id="guests-list">
-                    <!-- Guests will be added here -->
-                </tbody>
-            </table>
-            <p id="no-guests">No guests currently checked in.</p>
-        </div>
-        
-        <!-- Search Guest -->
-        <div id="search-section" class="hidden">
-            <h2>Search Guest</h2>
-            <form id="search-form">
-                <label for="search-name">Guest Name:</label>
-                <input type="text" id="search-name" required>
-                <button type="submit">Search</button>
-            </form>
-            <div id="search-results"></div>
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
         </div>
     </div>
 
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
     <script>
-        // Store guests in memory
-        let guests = JSON.parse(localStorage.getItem('hotelGuests')) || [];
+        // Set the date we're counting down to (1 month from now)
+        const countDownDate = new Date();
+        countDownDate.setMonth(countDownDate.getMonth() + 1);
         
-        // Show/hide sections
-        function showSection(sectionId) {
-            document.getElementById('checkin-section').classList.add('hidden');
-            document.getElementById('view-section').classList.add('hidden');
-            document.getElementById('search-section').classList.add('hidden');
+        // Update the countdown every 1 second
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
             
-            document.getElementById(sectionId + '-section').classList.remove('hidden');
+            // Time calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            if (sectionId === 'view') {
-                displayAllGuests();
+            // Display the result
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+            
+            // If the countdown is finished
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
             }
-        }
+        }, 1000);
         
-        // Check in a new guest
-        document.getElementById('checkin-form').addEventListener('submit', function(e) {
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            const email = this.querySelector('input').value;
             
-            const guest = {
-                name: document.getElementById('name').value,
-                room: document.getElementById('room').value,
-                checkin: document.getElementById('checkin').value,
-                nights: document.getElementById('nights').value
-            };
+            // Here you would typically send this to your backend
+            console.log('Email submitted:', email);
             
-            guests.push(guest);
-            localStorage.setItem('hotelGuests', JSON.stringify(guests));
-            
-            document.getElementById('checkin-message').innerHTML = `
-                <p style="color: green;">Guest ${guest.name} checked into room ${guest.room} successfully.</p>
-            `;
-            
-            // Clear form
-            this.reset();
+            // Show a success message
+            alert('Thank you! We\'ll notify you when we launch.');
+            this.querySelector('input').value = '';
         });
-        
-        // Display all guests
-        function displayAllGuests() {
-            const tbody = document.getElementById('guests-list');
-            tbody.innerHTML = '';
-            
-            if (guests.length === 0) {
-                document.getElementById('no-guests').style.display = 'block';
-                return;
-            }
-            
-            document.getElementById('no-guests').style.display = 'none';
-            
-            guests.forEach(guest => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${guest.name}</td>
-                    <td>${guest.room}</td>
-                    <td>${guest.checkin}</td>
-                    <td>${guest.nights}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-        
-        // Search for a guest
-        document.getElementById('search-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const searchName = document.getElementById('search-name').value.toLowerCase();
-            const results = guests.filter(guest => 
-                guest.name.toLowerCase().includes(searchName)
-            );
-            
-            const resultsDiv = document.getElementById('search-results');
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<p>No guests found with that name.</p>';
-                return;
-            }
-            
-            let html = '<h3>Search Results:</h3><ul>';
-            results.forEach(guest => {
-                html += `
-                    <li>
-                        <strong>${guest.name}</strong> - Room ${guest.room}<br>
-                        Check-in: ${guest.checkin} for ${guest.nights} nights
-                    </li>
-                `;
-            });
-            html += '</ul>';
-            
-            resultsDiv.innerHTML = html;
-        });
-        
-        // Initialize by showing check-in section
-        showSection('checkin');
     </script>
 </body>
 </html>
