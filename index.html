@@ -1,262 +1,1184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lümn | Coming Soon</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
+    <title>LÜMN | Dark Minimalist Apparel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #111111;
-            --secondary: #333333;
-            --accent: #4a6fa5;
-            --bg: #f8f8f8;
-            --text: #222222;
-            --text-light: #777777;
+            --primary: #ffffff;
+            --secondary: #cccccc;
+            --accent: #a58b4a;
+            --bg: #0a0a0a;
+            --bg-secondary: #111111;
+            --text: #eeeeee;
+            --text-light: #aaaaaa;
+            --border: #333333;
+            --error: #ff4d4d;
+            --success: #4dff88;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            height: 100vh;
-            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        /* Admin Controls */
+        .admin-panel {
+            background: var(--bg-secondary);
+            padding: 1rem 5%;
+            border-bottom: 1px solid var(--border);
+            display: none;
+            position: fixed;
+            width: 100%;
+            top: 80px;
+            z-index: 99;
+        }
+        
+        .admin-controls {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            z-index: 1001;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-form h2 {
+            margin-bottom: 1.5rem;
             text-align: center;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .login-error {
+            color: var(--error);
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            background-color: rgba(10, 10, 10, 0.9);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
             position: relative;
         }
 
-        .bg-pattern {
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .auth-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: var(--bg);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 10%;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
-            background-size: 40px 40px;
-            opacity: 0.6;
+            background: linear-gradient(to right, rgba(10,10,10,0.9), rgba(10,10,10,0.6)), 
+                        url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
             z-index: -1;
         }
 
-        .container {
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
             max-width: 600px;
-            padding: 2rem;
-            animation: fadeIn 1.5s ease-out;
         }
 
-        .logo {
-            font-size: 3.5rem;
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: -2px;
-            margin-bottom: 1.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 6rem 5%;
+            margin-top: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
             position: relative;
             display: inline-block;
         }
 
-        .logo::after {
+        .section-title::after {
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--accent);
-            animation: stretch 1.5s ease-out;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
         }
 
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
         }
 
-        p {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            max-width: 500px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.6;
-        }
-
-        .newsletter {
-            max-width: 500px;
-            margin: 0 auto 3rem;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .newsletter-input {
-            flex: 1;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
+        .product-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 4px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
         }
 
-        .newsletter-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        .product-card:hover {
+            transform: translateY(-10px);
         }
 
-        .newsletter-button {
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: white;
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--accent);
+            color: var(--bg);
             border: none;
             border-radius: 4px;
-            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s;
         }
 
-        .newsletter-button:hover {
+        .add-to-cart:hover {
+            background: #c5a85e;
+        }
+
+        .delete-product {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--error);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .delete-product {
+            opacity: 1;
+        }
+
+        /* Add Product Form */
+        .add-product-form {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            max-width: 500px;
+            margin: 2rem auto;
+            display: none;
+        }
+
+        .add-product-form h3 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .add-product-form input,
+        .add-product-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+        }
+
+        .add-product-form button {
+            width: 100%;
+            padding: 1rem;
             background: var(--accent);
-            transform: translateY(-2px);
+            color: var(--bg);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            z-index: 1000;
+            transition: right 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .quantity {
+            margin: 0 10px;
+        }
+
+        .remove-item {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #c5a85e;
+        }
+
+        .checkout-disabled {
+            background: #333;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5%;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .footer-about {
+            max-width: 300px;
+        }
+
+        .footer-about p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
         }
 
         .social-links {
             display: flex;
-            justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        .social-link {
+        .social-links a {
             color: var(--text-light);
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            transition: color 0.3s;
         }
 
-        .social-link:hover {
+        .social-links a:hover {
             color: var(--accent);
-            transform: translateY(-3px);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
         }
 
-        @keyframes stretch {
-            0% { width: 0; opacity: 0; }
-            100% { width: 80px; opacity: 1; }
+        .footer-links ul {
+            list-style: none;
         }
 
-        /* Floating fabric animation */
-        .fabric {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: rgba(74, 111, 165, 0.1);
-            border-radius: 50% 50% 0 50%;
-            z-index: -1;
-            animation: float 15s infinite ease-in-out;
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
 
-        .fabric:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            width: 150px;
-            height: 150px;
-            animation-delay: 0s;
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .fabric:nth-child(2) {
-            bottom: 15%;
-            right: 10%;
-            width: 180px;
-            height: 180px;
-            animation-delay: 2s;
+        .footer-links a:hover {
+            color: var(--accent);
         }
 
-        .fabric:nth-child(3) {
-            top: 60%;
-            left: 25%;
-            width: 100px;
-            height: 100px;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .logo {
+            .hero h1 {
                 font-size: 2.5rem;
             }
             
-            h1 {
-                font-size: 1.8rem;
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .admin-panel {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 1rem;
             }
             
-            .newsletter-form {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .admin-controls {
                 flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating fabric elements -->
-    <div class="fabric"></div>
-    <div class="fabric"></div>
-    <div class="fabric"></div>
-    
-    <!-- Subtle background pattern -->
-    <div class="bg-pattern"></div>
-    
-    <div class="container">
-        <div class="logo">LÜMN</div>
-        <h1>Modern Minimalist Apparel<br>Coming Soon</h1>
-        <p>We're crafting elevated essentials for your wardrobe. Sign up to be the first to know when we launch.</p>
-        
-        <div class="newsletter">
-            <form class="newsletter-form">
-                <input type="email" class="newsletter-input" placeholder="Your email address" required>
-                <button type="submit" class="newsletter-button">Notify Me</button>
-            </form>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">LÜMN</a>
+        <div class="nav-links">
+            <a href="#shop">Shop</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <button class="auth-btn" id="auth-btn">Login</button>
+            <button class="cart-btn">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count">0</span>
+            </button>
         </div>
-        
-        <div class="social-links">
-            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+    </nav>
+
+    <!-- Admin Panel (shown only to authenticated admin) -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-controls">
+            <button class="admin-btn" id="add-product-btn">Add Product</button>
+            <span id="admin-welcome" style="color: var(--accent); margin-left: auto;"></span>
+            <button class="admin-btn" id="logout-btn">Logout</button>
         </div>
     </div>
 
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    
+    <!-- Login Form -->
+    <div class="login-form" id="login-form">
+        <h2>Admin Login</h2>
+        <div class="login-error" id="login-error">Invalid credentials</div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="login-btn">Login</button>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="add-product-form" id="add-product-form">
+        <h3>Add New Product</h3>
+        <input type="text" id="product-name" placeholder="Product Name">
+        <input type="number" id="product-price" placeholder="Price">
+        <input type="text" id="product-image" placeholder="Image URL">
+        <textarea id="product-description" placeholder="Description"></textarea>
+        <button id="submit-product">Add Product</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Dark Minimalist Apparel</h1>
+        <p>Crafted for those who appreciate the beauty of darkness and the elegance of simplicity.</p>
+        <button class="cta-button">View Collection</button>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="shop">
+        <h2 class="section-title">Our Collection</h2>
+        <div class="products-grid" id="products-container">
+            <!-- Products will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="checkout-btn checkout-disabled">Checkout (Coming Soon)</button>
+        </div>
+    </div>
+    <div class="overlay"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">LÜMN</div>
+                <p>Dark minimalist apparel for those who appreciate refined aesthetics and uncompromising quality.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Information</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Journal</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2024 LÜMN. All rights reserved.
+        </div>
+    </footer>
+
     <script>
-        // Newsletter form submission
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input').value;
+        // Admin credentials
+        const ADMIN_USERNAME = "lümnofficial";
+        const ADMIN_PASSWORD = "lumndark2024"; // In a real app, use proper authentication
+
+        // Sample product data
+        let products = JSON.parse(localStorage.getItem('lumn-products')) || [
+            {
+                id: '1',
+                name: 'Nocturnal Tee',
+                price: 65,
+                image: 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                description: 'Essential black tee in premium organic cotton'
+            },
+            {
+                id: '2',
+                name: 'Shadow Pants',
+                price: 120,
+                image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                description: 'Slim-fit trousers in technical fabric'
+            },
+            {
+                id: '3',
+                name: 'Eclipse Hoodie',
+                price: 145,
+                image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                description: 'Minimalist hoodie with hidden details'
+            },
+            {
+                id: '4',
+                name: 'Obsidian Shirt',
+                price: 95,
+                image: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                description: 'Oversized black shirt in linen blend'
+            }
+        ];
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let isAdmin = false;
+
+        // DOM elements
+        const productsContainer = document.getElementById('products-container');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartCountElement = document.querySelector('.cart-count');
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const overlay = document.querySelector('.overlay');
+        const cartBtn = document.querySelector('.cart-btn');
+        const closeCartBtn = document.querySelector('.close-cart');
+        const authBtn = document.getElementById('auth-btn');
+        const loginForm = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+        const loginError = document.getElementById('login-error');
+        const adminPanel = document.getElementById('admin-panel');
+        const addProductBtn = document.getElementById('add-product-btn');
+        const addProductForm = document.getElementById('add-product-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminWelcome = document.getElementById('admin-welcome');
+
+        // Check if admin is already logged in
+        if (localStorage.getItem('lumn-admin') === 'true') {
+            loginAsAdmin();
+        }
+
+        // Render products
+        function renderProducts() {
+            productsContainer.innerHTML = '';
+            products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                productElement.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <span class="product-price">$${product.price.toFixed(2)}</span>
+                        <p>${product.description}</p>
+                        <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                        ${isAdmin ? `<button class="delete-product" data-id="${product.id}"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                `;
+                productsContainer.appendChild(productElement);
+            });
+
+            // Add event listeners to "Add to Cart" buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.getAttribute('data-id');
+                    const product = products.find(p => p.id === productId);
+                    addToCart(product);
+                });
+            });
+
+            // Add event listeners to delete buttons (admin only)
+            if (isAdmin) {
+                document.querySelectorAll('.delete-product').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = e.target.closest('button').getAttribute('data-id');
+                        deleteProduct(productId);
+                    });
+                });
+            }
+        }
+
+        // Add to cart
+        function addToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
             
-            // Here you would typically send this to your backend
-            console.log('Email submitted:', email);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
             
-            // Show a success message
-            alert('Thank you! We\'ll notify you when we launch.');
-            this.querySelector('input').value = '';
+            updateCart();
+            showAddToCartAnimation();
+        }
+
+        // Show add to cart animation
+        function showAddToCartAnimation() {
+            const cartIcon = document.querySelector('.cart-btn i');
+            const animation = document.createElement('div');
+            animation.style.position = 'fixed';
+            animation.style.left = '50%';
+            animation.style.top = '50%';
+            animation.style.width = '40px';
+            animation.style.height = '40px';
+            animation.style.backgroundColor = 'var(--accent)';
+            animation.style.borderRadius = '50%';
+            animation.style.display = 'flex';
+            animation.style.alignItems = 'center';
+            animation.style.justifyContent = 'center';
+            animation.style.color = 'var(--bg)';
+            animation.style.zIndex = '10000';
+            animation.style.transform = 'translate(-50%, -50%) scale(0)';
+            animation.style.transition = 'all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1)';
+            animation.innerHTML = '<i class="fas fa-check"></i>';
+            
+            document.body.appendChild(animation);
+            
+            setTimeout(() => {
+                animation.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+            
+            setTimeout(() => {
+                const cartRect = cartIcon.getBoundingClientRect();
+                animation.style.left = `${cartRect.left + cartRect.width / 2}px`;
+                animation.style.top = `${cartRect.top + cartRect.height / 2}px`;
+                animation.style.transform = 'scale(0.5)';
+                animation.style.opacity = '0';
+            }, 500);
+            
+            setTimeout(() => {
+                animation.remove();
+            }, 1000);
+        }
+
+        // Update cart
+        function updateCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCartItems();
+            updateCartCount();
+        }
+
+        // Render cart items
+        function renderCartItems() {
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty</p>';
+                cartTotalElement.textContent = '$0.00';
+                return;
+            }
+            
+            let total = 0;
+            
+            cart.forEach(item => {
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <h4 class="cart-item-title">${item.name}</h4>
+                        <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                        <div class="cart-item-actions">
+                            <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                            <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItemElement);
+                
+                total += item.price * item.quantity;
+            });
+            
+            cartTotalElement.textContent = `$${total.toFixed(2)}`;
+            
+            // Add event listeners to quantity buttons
+            document.querySelectorAll('.decrease').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.getAttribute('data-id');
+                    updateQuantity(productId, -1);
+                });
+            });
+            
+            document.querySelectorAll('.increase').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.getAttribute('data-id');
+                    updateQuantity(productId, 1);
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.closest('button').getAttribute('data-id');
+                    removeFromCart(productId);
+                });
+            });
+        }
+
+        // Update quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+                
+                updateCart();
+            }
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCountElement.textContent = count;
+        }
+
+        // Delete product (admin only)
+        function deleteProduct(productId) {
+            if (!isAdmin) return;
+            
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(product => product.id !== productId);
+                localStorage.setItem('lumn-products', JSON.stringify(products));
+                renderProducts();
+                
+                // Also remove from cart if present
+                cart = cart.filter(item => item.id !== productId);
+                updateCart();
+            }
+        }
+
+        // Add new product (admin only)
+        function addNewProduct() {
+            const name = document.getElementById('product-name').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const image = document.getElementById('product-image').value;
+            const description = document.getElementById('product-description').value;
+            
+            if (!name || !price || !image || !description) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            const newProduct = {
+                id: Date.now().toString(),
+                name,
+                price,
+                image,
+                description
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('lumn-products', JSON.stringify(products));
+            renderProducts();
+            
+            // Reset form
+            document.getElementById('product-name').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('product-image').value = '';
+            document.getElementById('product-description').value = '';
+            
+            // Hide form
+            addProductForm.style.display = 'none';
+            overlay.classList.remove('active');
+        }
+
+        // Login as admin
+        function loginAsAdmin() {
+            isAdmin = true;
+            localStorage.setItem('lumn-admin', 'true');
+            adminPanel.style.display = 'block';
+            authBtn.textContent = 'Admin';
+            authBtn.style.color = 'var(--accent)';
+            adminWelcome.textContent = `Welcome, ${ADMIN_USERNAME}`;
+            renderProducts();
+        }
+
+        // Logout
+        function logout() {
+            isAdmin = false;
+            localStorage.removeItem('lumn-admin');
+            adminPanel.style.display = 'none';
+            authBtn.textContent = 'Login';
+            authBtn.style.color = '';
+            renderProducts();
+        }
+
+        // Toggle cart
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeCartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        overlay.addEventListener('click', () => {
+            cartSidebar.classList.remove('open');
+            addProductForm.style.display = 'none';
+            loginForm.style.display = 'none';
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Auth button click
+        authBtn.addEventListener('click', () => {
+            if (isAdmin) {
+                // Already logged in - no action or show admin panel
+                return;
+            } else {
+                loginForm.style.display = 'block';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        // Login button click
+        loginBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                loginAsAdmin();
+                loginForm.style.display = 'none';
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                loginError.style.display = 'none';
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+
+        // Add product button click
+        addProductBtn.addEventListener('click', () => {
+            addProductForm.style.display = 'block';
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Submit product button click
+        document.getElementById('submit-product').addEventListener('click', addNewProduct);
+
+        // Logout button click
+        logoutBtn.addEventListener('click', logout);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartCount();
         });
     </script>
 </body>
