@@ -5,24 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Find Kurucz Gergely 👁️</title>
   <style>
+    :root {
+      --bg: #111;
+      --text: #eee;
+      --btn-bg: #fff;
+      --btn-text: #111;
+      --footer: #666;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #fff;
+        --text: #000;
+        --btn-bg: #000;
+        --btn-text: #fff;
+        --footer: #888;
+      }
+    }
+
     body {
       font-family: 'Courier New', monospace;
-      background-color: #111;
-      color: #eee;
+      background-color: var(--bg);
+      color: var(--text);
       text-align: center;
       padding: 60px 20px;
       overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     h1 {
       font-size: 3rem;
-      color: #fff;
       margin-bottom: 20px;
     }
 
     p {
       font-size: 1.2rem;
-      color: #bbb;
       max-width: 700px;
       margin: 0 auto 40px;
     }
@@ -40,24 +57,24 @@
       margin-top: 40px;
       padding: 20px 50px;
       font-size: 2rem;
-      background-color: #fff;
-      color: #111;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
       text-decoration: none;
       border-radius: 20px;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: all 0.3s ease;
       font-weight: bold;
-      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     .download-btn:hover {
-      background-color: #000;
-      color: #fff;
+      background-color: var(--btn-text);
+      color: var(--btn-bg);
     }
 
     .footer {
       margin-top: 80px;
       font-size: 0.9rem;
-      color: #666;
+      color: var(--footer);
     }
   </style>
 </head>
@@ -66,32 +83,29 @@
 
   <h1>FIND KURUCZ GERGELY</h1>
   <p>He's not a person. He's not an idea. He's not a dream. He just... is.  
-  Download the game, and try to find what can't be found.</p>
+  Download the game and uncover the unspeakable.</p>
 
-  <a href="https://github.com/mroldmobo/findkuruczgeri/releases/download/ReleaseVersionsK.G/getkuruczgergely0.11.py" class="download-btn" target="_blank">
+  <a href="https://github.com/mroldmobo/findkuruczgeri/releases/download/ReleaseVersionsK.G/findkuruczgergely.zip" class="download-btn" download>
     ⬇️ DOWNLOAD THE GAME
   </a>
 
   <div class="footer">
-    Made by the brave. Hosted in the shadows. 🕳️
+    Hosted in mystery. Powered by curiosity. 🕳️
   </div>
 
   <script>
     const eye = document.getElementById('eye');
-
     let mouseX = 0;
     let mouseY = 0;
     let eyeX = 0;
     let eyeY = 0;
 
     document.addEventListener('mousemove', (e) => {
-      // Cursor position, but we offset where the eye *wants* to go
       mouseX = e.clientX - 60;
       mouseY = e.clientY - 60;
     });
 
     function animateEye() {
-      // Smoothly follow the mouse, like a lazy ghost
       eyeX += (mouseX - eyeX) * 0.05;
       eyeY += (mouseY - eyeY) * 0.05;
       eye.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
