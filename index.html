@@ -6,173 +6,83 @@
   <title>Find Kurucz Gergely 👁️</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background-color: #fafafa;
+      font-family: 'Courier New', monospace;
+      background-color: #111;
+      color: #eee;
       text-align: center;
-      padding: 50px;
+      padding: 60px 20px;
       overflow-x: hidden;
     }
 
     h1 {
-      color: #222;
       font-size: 3rem;
-    }
-
-    .game-area {
-      margin-top: 40px;
-      position: relative;
-      width: 80vw;
-      height: 60vh;
-      margin-left: auto;
-      margin-right: auto;
-      background-color: #e8e8e8;
-      border: 5px dashed #999;
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: crosshair;
-    }
-
-    .target {
-      position: absolute;
-      width: 90px;
-      height: 90px;
-      background-color: #222;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      font-size: 0.8rem;
-      font-weight: bold;
-      user-select: none;
-      box-shadow: 0 0 10px #000;
-      white-space: pre-line;
+      margin-bottom: 20px;
     }
 
-    #message {
-      margin-top: 20px;
-      font-size: 1.5rem;
-      color: green;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 25px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 10px;
-      background-color: #444;
-      color: #fff;
+    p {
+      font-size: 1.2rem;
+      color: #bbb;
+      max-width: 700px;
+      margin: 0 auto 40px;
     }
 
     .eye {
       position: fixed;
-      font-size: 2rem;
+      font-size: 2.5rem;
       pointer-events: none;
       z-index: 9999;
       transition: transform 0.05s linear;
     }
 
-    .upload-zone {
-      margin-top: 60px;
-      border: 4px solid #333;
-      border-radius: 15px;
-      background-color: #ddd;
-      padding: 40px;
-      width: 90%;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .upload-zone h2 {
-      font-size: 2.5rem;
-      color: #111;
-      margin-bottom: 20px;
-    }
-
-    .upload-zone input[type="file"] {
-      font-size: 1.2rem;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      border: 2px solid #666;
-    }
-
     .download-btn {
       display: inline-block;
       margin-top: 40px;
-      padding: 20px 40px;
+      padding: 20px 50px;
       font-size: 2rem;
-      background-color: #000;
-      color: #fff;
+      background-color: #fff;
+      color: #111;
       text-decoration: none;
-      border-radius: 15px;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
     }
 
     .download-btn:hover {
-      background-color: #444;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .footer {
+      margin-top: 80px;
+      font-size: 0.9rem;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <h1>Find Kurucz Gergely 👁️</h1>
-  <p>He's not a person. He's... something else. 👀</p>
-
   <div class="eye" id="eye">👁️</div>
 
-  <div class="game-area" id="gameArea"></div>
-  <div id="message"></div>
-  <button onclick="spawnEntity()">New Round</button>
+  <h1>FIND KURUCZ GERGELY</h1>
+  <p>He's not a person. He's not an idea. He's not a dream. He just... is.  
+  Download the game, and try to find what can't be found.</p>
 
-  <div class="upload-zone">
-    <h2>📁 UPLOAD THE FILES TO SUMMON KURUCZ GERGELY</h2>
-    <input type="file" multiple />
+  <a href="https://github.com/mroldmobo/findkuruczgeri/releases/tag/ReleaseVersionsK.G" class="download-btn" target="_blank">
+    ⬇️ DOWNLOAD THE GAME
+  </a>
+
+  <div class="footer">
+    Made by the brave. Hosted in the shadows. 🕳️
   </div>
 
-  <a href="https://your-github-username.github.io/your-repo-name/game.zip" class="download-btn" target="_blank">⬇️ DOWNLOAD THE GAME FILES</a>
-
   <script>
-    const gameArea = document.getElementById('gameArea');
-    const message = document.getElementById('message');
     const eye = document.getElementById('eye');
-
-    // Eye follows the cursor
     document.addEventListener('mousemove', (e) => {
       eye.style.left = `${e.clientX - 15}px`;
       eye.style.top = `${e.clientY - 15}px`;
     });
-
-    // Spawn The Entity
-    function spawnEntity() {
-      message.textContent = "";
-      gameArea.innerHTML = "";
-
-      const gergely = document.createElement('div');
-      gergely.classList.add('target');
-      gergely.textContent = "KURUCZ\nGERGELY";
-
-      const maxX = gameArea.clientWidth - 90;
-      const maxY = gameArea.clientHeight - 90;
-
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-
-      gergely.style.left = `${randomX}px`;
-      gergely.style.top = `${randomY}px`;
-
-      gergely.onclick = () => {
-        message.textContent = "✅ You found... whatever Kurucz Gergely is.";
-        gergely.remove();
-      };
-
-      gameArea.appendChild(gergely);
-    }
-
-    spawnEntity();
   </script>
 </body>
 </html>
+
