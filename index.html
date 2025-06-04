@@ -1,118 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Find Kurucz Gergely 👁️</title>
-  <style>
-    :root {
-      --bg: #111;
-      --text: #eee;
-      --btn-bg: #fff;
-      --btn-text: #111;
-      --footer: #666;
-    }
+// ✅ Step 1: Setup base JavaScript game logic for browser version
+// Rebuild core game loop from Python to JS
+document.addEventListener('DOMContentLoaded', () => {
+  const player = {
+    energy: 100,
+    fame: 0,
+    searches: 0,
+    specialEvents: 0,
+    foundLegends: [],
+  };
 
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #fff;
-        --text: #000;
-        --btn-bg: #000;
-        --btn-text: #fff;
-        --footer: #888;
+  const LEGEND_CHANCE = 1000000;
+  const FAME_REQUIRED = 1000;
+
+  const events = {
+    "Coffee Break": { energy: +30, text: "You found an abandoned coffee shop! +30 energy" },
+    "Bug Fix": { fame: +50, text: "You fixed a critical bug! +50 fame" },
+    "Stack Overflow": { energy: -15, text: "You got lost on Stack Overflow! -15 energy" }
+  };
+
+  const statusEl = document.getElementById('status');
+  const logEl = document.getElementById('log');
+  const searchBtn = document.getElementById('search');
+  const restBtn = document.getElementById('rest');
+
+  function log(text) {
+    const p = document.createElement('p');
+    p.textContent = text;
+    logEl.prepend(p);
+  }
+
+  function updateStatus() {
+    statusEl.innerHTML = `
+      Fame: ${player.fame}/${FAME_REQUIRED}<br>
+      Energy: ${player.energy}/100<br>
+      Searches: ${player.searches}<br>
+      Special Events: ${player.specialEvents}<br>
+      Legend: ${player.foundLegends.length ? '🏆 Found' : '❌ Not yet'}
+    `;
+  }
+
+  function handleSpecialEvent() {
+    if (Math.random() < 0.15) {
+      const keys = Object.keys(events);
+      const event = keys[Math.floor(Math.random() * keys.length)];
+      const effect = events[event];
+      player.energy = Math.max(0, player.energy + (effect.energy || 0));
+      player.fame += effect.fame || 0;
+      player.specialEvents++;
+      log(`⚡ ${event.toUpperCase()}: ${effect.text}`);
+      return true;
+    }
+    return false;
+  }
+
+  function search() {
+    if (player.energy < 10) {
+      log("⚠️ Not enough energy to search!");
+      return;
+    }
+    player.energy -= 10;
+    player.searches++;
+    log("🔍 Searching...");
+
+    if (!handleSpecialEvent()) {
+      const isLegend = Math.floor(Math.random() * LEGEND_CHANCE) === 0;
+      if (isLegend) {
+        player.fame = FAME_REQUIRED;
+        player.foundLegends.push("Kurucz Gergely");
+        log("🎉✨ YOU FOUND KURUCZ GERGELY! ✨🎉");
+      } else {
+        const fameGain = Math.floor(Math.random() * 10) + 1;
+        player.fame += fameGain;
+        log(`Found a random dev. +${fameGain} fame.`);
       }
     }
+    updateStatus();
+  }
 
-    body {
-      font-family: 'Courier New', monospace;
-      background-color: var(--bg);
-      color: var(--text);
-      text-align: center;
-      padding: 60px 20px;
-      overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+  function rest() {
+    const gain = Math.floor(Math.random() * 20) + 20;
+    player.energy = Math.min(100, player.energy + gain);
+    log(`💤 You recovered ${gain} energy.`);
+    updateStatus();
+  }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 0 auto 40px;
-    }
-
-    .eye {
-      position: fixed;
-      font-size: 2.5rem;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.1s linear;
-    }
-
-    .download-btn {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 20px 50px;
-      font-size: 2rem;
-      background-color: var(--btn-bg);
-      color: var(--btn-text);
-      text-decoration: none;
-      border-radius: 20px;
-      transition: all 0.3s ease;
-      font-weight: bold;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .download-btn:hover {
-      background-color: var(--btn-text);
-      color: var(--btn-bg);
-    }
-
-    .footer {
-      margin-top: 80px;
-      font-size: 0.9rem;
-      color: var(--footer);
-    }
-  </style>
-</head>
-<body>
-  <div class="eye" id="eye">👁️</div>
-
-  <h1>FIND KURUCZ GERGELY</h1>
-  <p>He's not a person. He's not an idea. He's not a dream. He just... is.  
-  Download the game and uncover the unspeakable.</p>
-
-  <a href="https://github.com/mroldmobo/findkuruczgeri/releases/download/ReleaseVersionsK.G/getkuruczgergely0.11.py" class="download-btn" download>
-    ⬇️ DOWNLOAD THE GAME
-  </a>
-
-  <div class="footer">
-    Hosted in mystery. Powered by curiosity. 🕳️
-  </div>
-
-  <script>
-    const eye = document.getElementById('eye');
-    let mouseX = 0;
-    let mouseY = 0;
-    let eyeX = 0;
-    let eyeY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX - 60;
-      mouseY = e.clientY - 60;
-    });
-
-    function animateEye() {
-      eyeX += (mouseX - eyeX) * 0.05;
-      eyeY += (mouseY - eyeY) * 0.05;
-      eye.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
-      requestAnimationFrame(animateEye);
-    }
-
-    animateEye();
-  </script>
-</body>
-</html>
+  searchBtn.onclick = search;
+  restBtn.onclick = rest;
+  updateStatus();
+});
