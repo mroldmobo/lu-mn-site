@@ -1,90 +1,157 @@
-// ✅ Step 1: Setup base JavaScript game logic for browser version
-// Rebuild core game loop from Python to JS
-document.addEventListener('DOMContentLoaded', () => {
-  const player = {
-    energy: 100,
-    fame: 0,
-    searches: 0,
-    specialEvents: 0,
-    foundLegends: [],
-  };
-
-  const LEGEND_CHANCE = 1000000;
-  const FAME_REQUIRED = 1000;
-
-  const events = {
-    "Coffee Break": { energy: +30, text: "You found an abandoned coffee shop! +30 energy" },
-    "Bug Fix": { fame: +50, text: "You fixed a critical bug! +50 fame" },
-    "Stack Overflow": { energy: -15, text: "You got lost on Stack Overflow! -15 energy" }
-  };
-
-  const statusEl = document.getElementById('status');
-  const logEl = document.getElementById('log');
-  const searchBtn = document.getElementById('search');
-  const restBtn = document.getElementById('rest');
-
-  function log(text) {
-    const p = document.createElement('p');
-    p.textContent = text;
-    logEl.prepend(p);
-  }
-
-  function updateStatus() {
-    statusEl.innerHTML = `
-      Fame: ${player.fame}/${FAME_REQUIRED}<br>
-      Energy: ${player.energy}/100<br>
-      Searches: ${player.searches}<br>
-      Special Events: ${player.specialEvents}<br>
-      Legend: ${player.foundLegends.length ? '🏆 Found' : '❌ Not yet'}
-    `;
-  }
-
-  function handleSpecialEvent() {
-    if (Math.random() < 0.15) {
-      const keys = Object.keys(events);
-      const event = keys[Math.floor(Math.random() * keys.length)];
-      const effect = events[event];
-      player.energy = Math.max(0, player.energy + (effect.energy || 0));
-      player.fame += effect.fame || 0;
-      player.specialEvents++;
-      log(`⚡ ${event.toUpperCase()}: ${effect.text}`);
-      return true;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Kurucz Gergely</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1b1b2f);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      color: #ffffff;
+      padding: 40px;
+      text-align: center;
     }
-    return false;
-  }
 
-  function search() {
-    if (player.energy < 10) {
-      log("⚠️ Not enough energy to search!");
-      return;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    player.energy -= 10;
-    player.searches++;
-    log("🔍 Searching...");
 
-    if (!handleSpecialEvent()) {
-      const isLegend = Math.floor(Math.random() * LEGEND_CHANCE) === 0;
-      if (isLegend) {
-        player.fame = FAME_REQUIRED;
-        player.foundLegends.push("Kurucz Gergely");
-        log("🎉✨ YOU FOUND KURUCZ GERGELY! ✨🎉");
-      } else {
-        const fameGain = Math.floor(Math.random() * 10) + 1;
-        player.fame += fameGain;
-        log(`Found a random dev. +${fameGain} fame.`);
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #status {
+      font-size: 1.1rem;
+      margin: 20px 0;
+    }
+
+    #log {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #ff3860;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff1e45;
+    }
+  </style>
+</head>
+<body>
+  <h1>Find Kurucz Gergely</h1>
+  <div id="status"></div>
+  <button id="search">🔍 Search</button>
+  <button id="rest">💤 Rest</button>
+  <div id="log"></div>
+
+  <script>
+    const player = {
+      energy: 100,
+      fame: 0,
+      searches: 0,
+      specialEvents: 0,
+      foundLegends: [],
+    };
+
+    const LEGEND_CHANCE = 1000000;
+    const FAME_REQUIRED = 1000;
+
+    const events = {
+      "Coffee Break": { energy: +30, text: "You found an abandoned coffee shop! +30 energy" },
+      "Bug Fix": { fame: +50, text: "You fixed a critical bug! +50 fame" },
+      "Stack Overflow": { energy: -15, text: "You got lost on Stack Overflow! -15 energy" }
+    };
+
+    const statusEl = document.getElementById('status');
+    const logEl = document.getElementById('log');
+    const searchBtn = document.getElementById('search');
+    const restBtn = document.getElementById('rest');
+
+    function log(text) {
+      const p = document.createElement('p');
+      p.textContent = text;
+      logEl.prepend(p);
+    }
+
+    function updateStatus() {
+      statusEl.innerHTML = `
+        ⭐ Fame: ${player.fame}/${FAME_REQUIRED}<br>
+        ⚡ Energy: ${player.energy}/100<br>
+        🔎 Searches: ${player.searches}<br>
+        ✨ Events: ${player.specialEvents}<br>
+        🏆 Legend: ${player.foundLegends.length ? 'Found!' : 'Not yet'}
+      `;
+    }
+
+    function handleSpecialEvent() {
+      if (Math.random() < 0.15) {
+        const keys = Object.keys(events);
+        const event = keys[Math.floor(Math.random() * keys.length)];
+        const effect = events[event];
+        player.energy = Math.max(0, player.energy + (effect.energy || 0));
+        player.fame += effect.fame || 0;
+        player.specialEvents++;
+        log(`⚡ ${event.toUpperCase()}: ${effect.text}`);
+        return true;
       }
+      return false;
     }
-    updateStatus();
-  }
 
-  function rest() {
-    const gain = Math.floor(Math.random() * 20) + 20;
-    player.energy = Math.min(100, player.energy + gain);
-    log(`💤 You recovered ${gain} energy.`);
-    updateStatus();
-  }
+    function search() {
+      if (player.energy < 10) {
+        log("⚠️ Not enough energy to search!");
+        return;
+      }
+      player.energy -= 10;
+      player.searches++;
+      log("🔍 Searching...");
 
-  searchBtn.onclick = search;
-  restBtn.onclick = rest;
-  updateStatus();
-});
+      if (!handleSpecialEvent()) {
+        const isLegend = Math.floor(Math.random() * LEGEND_CHANCE) === 0;
+        if (isLegend) {
+          player.fame = FAME_REQUIRED;
+          player.foundLegends.push("Kurucz Gergely");
+          log("🎉✨ YOU FOUND KURUCZ GERGELY! ✨🎉");
+        } else {
+          const fameGain = Math.floor(Math.random() * 10) + 1;
+          player.fame += fameGain;
+          log(`Found a random dev. +${fameGain} fame.`);
+        }
+      }
+      updateStatus();
+    }
+
+    function rest() {
+      const gain = Math.floor(Math.random() * 20) + 20;
+      player.energy = Math.min(100, player.energy + gain);
+      log(`💤 You recovered ${gain} energy.`);
+      updateStatus();
+    }
+
+    searchBtn.onclick = search;
+    restBtn.onclick = rest;
+    updateStatus();
+  </script>
+</body>
+</html>
