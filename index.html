@@ -2,179 +2,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find Kurucz Gergely</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find Kurucz Gergely 👁️</title>
   <style>
-    body {
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1b1b2f);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
-      color: #ffffff;
-      padding: 40px;
-      text-align: center;
+    :root {
+      --bg: #111;
+      --text: #eee;
+      --btn-bg: #fff;
+      --btn-text: #111;
+      --footer: #666;
+      --red: #e63946;
+      --red-hover: #b32a34;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #fff;
+        --text: #000;
+        --btn-bg: #000;
+        --btn-text: #fff;
+        --footer: #888;
+        --red: #d62828;
+        --red-hover: #9b1e1e;
+      }
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
+      padding: 60px 20px;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .eye {
+      position: fixed;
       font-size: 2.5rem;
-      margin-bottom: 1rem;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s linear;
     }
 
-    #status {
-      font-size: 1.1rem;
-      margin: 20px 0;
+    .download-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 20px 50px;
+      font-size: 2rem;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      text-decoration: none;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    #log {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 10px;
-      max-height: 300px;
-      overflow-y: auto;
+    .download-btn:hover {
+      background-color: var(--btn-text);
+      color: var(--btn-bg);
+    }
+
+    /* Red Requirements button */
+    .req-btn {
+      display: inline-block;
       margin-top: 20px;
-      text-align: left;
-    }
-
-    button {
-      padding: 12px 24px;
-      margin: 10px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #ff3860;
+      padding: 15px 40px;
+      font-size: 1.5rem;
+      background-color: var(--red);
       color: #fff;
-      transition: background-color 0.3s;
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(230, 57, 70, 0.6);
+      transition: background-color 0.3s ease;
     }
 
-    button:hover {
-      background-color: #ff1e45;
+    .req-btn:hover {
+      background-color: var(--red-hover);
     }
+
+    .footer {
+      margin-top: 80px;
+      font-size: 0.9rem;
+      color: var(--footer);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none; /* hidden by default */
+      position: fixed;
+      z-index: 10000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 40px;
+      border-radius: 20px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 30px var(--red);
+      font-size: 1.2rem;
+      position: relative;
+      font-family: 'Courier New', monospace;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px; right: 20px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--red);
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .close-btn:hover {
+      color: var(--red-hover);
+    }
+
   </style>
 </head>
 <body>
-  <h1>Find Kurucz Gergely</h1>
-  <div id="status"></div>
-  <button id="search">🔍 Search</button>
-  <button id="rest">💤 Rest</button>
-  <div id="log"></div>
+  <div class="eye" id="eye">👁️</div>
+
+  <h1>FIND KURUCZ GERGELY</h1>
+  <p>He's not a person. He's not an idea. He's not a dream. He just... is.<br/>
+  Download the game and uncover the unspeakable.</p>
+
+  <a href="https://github.com/mroldmobo/findkuruczgeri/releases/download/ReleaseVersionsK.G/findkuruczgergely.zip" class="download-btn" download>
+    ⬇️ DOWNLOAD THE GAME
+  </a>
+
+  <br/>
+  <button class="req-btn" id="reqBtn">REQUIREMENTS</button>
+
+  <div class="footer">
+    Hosted in mystery. Powered by curiosity. 🕳️
+  </div>
+
+  <!-- Modal -->
+  <div id="reqModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <h2>System Requirements</h2>
+      <p>You need anything that runs VS Code, plus a few more megs of space.</p>
+    </div>
+  </div>
 
   <script>
-    const player = {
-      energy: 100,
-      fame: 0,
-      searches: 0,
-      specialEvents: 0,
-      foundLegends: [],
-    };
+    const eye = document.getElementById('eye');
+    let mouseX = 0;
+    let mouseY = 0;
+    let eyeX = 0;
+    let eyeY = 0;
 
-    const LEGEND_CHANCE = 1000000;
-    const FAME_REQUIRED = 1000;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX - 60;
+      mouseY = e.clientY - 60;
+    });
 
-    const events = {
-      "Coffee Break": { energy: +30, text: "You found an abandoned coffee shop! +30 energy" },
-      "Bug Fix": { fame: +50, text: "You fixed a critical bug! +50 fame" },
-      "Stack Overflow": { energy: -15, text: "You got lost on Stack Overflow! -15 energy" }
-    };
-
-    const statusEl = document.getElementById('status');
-    const logEl = document.getElementById('log');
-    const searchBtn = document.getElementById('search');
-    const restBtn = document.getElementById('rest');
-
-    function log(text) {
-      const p = document.createElement('p');
-      p.textContent = text;
-      logEl.prepend(p);
+    function animateEye() {
+      eyeX += (mouseX - eyeX) * 0.05;
+      eyeY += (mouseY - eyeY) * 0.05;
+      eye.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
+      requestAnimationFrame(animateEye);
     }
 
-    function updateStatus() {
-      statusEl.innerHTML = `
-        ⭐ Fame: ${player.fame}/${FAME_REQUIRED}<br>
-        ⚡ Energy: ${player.energy}/100<br>
-        🔎 Searches: ${player.searches}<br>
-        ✨ Events: ${player.specialEvents}<br>
-        🏆 Legend: ${player.foundLegends.length ? 'Found!' : 'Not yet'}
-      `;
-    }
+    animateEye();
 
-    function handleSpecialEvent() {
-      if (Math.random() < 0.15) {
-        const keys = Object.keys(events);
-        const event = keys[Math.floor(Math.random() * keys.length)];
-        const effect = events[event];
-        player.energy = Math.max(0, player.energy + (effect.energy || 0));
-        player.fame += effect.fame || 0;
-        player.specialEvents++;
-        log(`⚡ ${event.toUpperCase()}: ${effect.text}`);
-        return true;
+    // Modal functionality
+    const reqBtn = document.getElementById('reqBtn');
+    const reqModal = document.getElementById('reqModal');
+    const closeModal = document.getElementById('closeModal');
+
+    reqBtn.addEventListener('click', () => {
+      reqModal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+      reqModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === reqModal) {
+        reqModal.style.display = 'none';
       }
-      return false;
-    }
-
-    function search() {
-      if (player.energy < 10) {
-        log("⚠️ Not enough energy to search!");
-        return;
-      }
-      player.energy -= 10;
-      player.searches++;
-      log("🔍 Searching...");
-
-      if (!handleSpecialEvent()) {
-        const isLegend = Math.floor(Math.random() * LEGEND_CHANCE) === 0;
-        if (isLegend) {
-          player.fame = FAME_REQUIRED;
-          player.foundLegends.push("Kurucz Gergely");
-          log("🎉✨ YOU FOUND KURUCZ GERGELY! ✨🎉");
-        } else {
-          const fameGain = Math.floor(Math.random() * 10) + 1;
-          player.fame += fameGain;
-          log(`Found a random dev. +${fameGain} fame.`);
-        }
-      }
-      updateStatus();
-    }
-
-    function rest() {
-      const gain = Math.floor(Math.random() * 20) + 20;
-      player.energy = Math.min(100, player.energy + gain);
-      log(`💤 You recovered ${gain} energy.`);
-      updateStatus();
-    }
-
-    searchBtn.onclick = search;
-    restBtn.onclick = rest;
-    updateStatus();
+    });
   </script>
 </body>
 </html>
- <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCGc-3bIUmpo2NEvOzvmiHqng0XV_-weIA",
-    authDomain: "kuruczgergely5.firebaseapp.com",
-    projectId: "kuruczgergely5",
-    storageBucket: "kuruczgergely5.firebasestorage.app",
-    messagingSenderId: "954257584632",
-    appId: "1:954257584632:web:a344ae002643f6c656660d",
-    measurementId: "G-MNHXVN0VXN"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
