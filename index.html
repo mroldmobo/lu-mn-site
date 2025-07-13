@@ -99,12 +99,12 @@
       background-color: var(--red-hover);
     }
 
-    /* Blue Source Code button */
-    .source-btn {
+    /* Source Code buttons */
+    .source-tar-btn, .source-zip-btn {
       display: inline-block;
       margin-top: 20px;
-      padding: 15px 40px;
-      font-size: 1.5rem;
+      padding: 15px 30px;
+      font-size: 1.3rem;
       background-color: var(--blue);
       color: #fff;
       border: none;
@@ -114,10 +114,10 @@
       box-shadow: 0 5px 15px rgba(58, 134, 255, 0.6);
       transition: background-color 0.3s ease;
       text-decoration: none;
-      margin-left: 15px;
+      margin-left: 10px;
     }
 
-    .source-btn:hover {
+    .source-tar-btn:hover, .source-zip-btn:hover {
       background-color: var(--blue-hover);
     }
 
@@ -166,11 +166,10 @@
     .close-btn:hover {
       color: var(--red-hover);
     }
-
   </style>
 </head>
 <body>
-  <div class="eye" id="eye">👁️</div>
+  <div class="eye" id="eye">👨🏻</div>
 
   <h1>FIND KURUCZ GERGELY</h1>
   <p>He's not a person. He's not an idea. He's not a dream. He just... is.<br/>
@@ -182,7 +181,8 @@
 
   <br/>
   <button class="req-btn" id="reqBtn">REQUIREMENTS</button>
-  <a href="https://github.com/mroldmobo/findkuruczgeri" class="source-btn" target="_blank">SOURCE CODE</a>
+  <a href="https://github.com/mroldmobo/findkuruczgeri/archive/refs/heads/main.tar.gz" class="source-tar-btn" target="_blank">Source Code (tar.gz)</a>
+  <a href="https://github.com/mroldmobo/findkuruczgeri/archive/refs/heads/main.zip" class="source-zip-btn" target="_blank">Source Code (zip)</a>
 
   <div class="footer">
     Hosted in mystery. Powered by curiosity. 🕳️
